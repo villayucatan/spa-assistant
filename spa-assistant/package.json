@@ -1,0 +1,14 @@
+{
+  "name": "spa-assistant-chat",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.5.0",
+    "express": "^4.18.2",
+    "openai": "^4.26.0"
+  }
+}

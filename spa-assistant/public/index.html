@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Assistant SPA</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: #f2f2f2;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    #chat {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1em;
+      display: flex;
+      flex-direction: column;
+    }
+    .message {
+      margin: 0.5em 0;
+      max-width: 70%;
+      padding: 0.6em 1em;
+      border-radius: 15px;
+    }
+    .user {
+      align-self: flex-end;
+      background: #dcf8c6;
+    }
+    .bot {
+      align-self: flex-start;
+      background: #fff;
+      border: 1px solid #ccc;
+    }
+    #form {
+      display: flex;
+      padding: 1em;
+      background: white;
+    }
+    input {
+      flex: 1;
+      padding: 0.8em;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      outline: none;
+    }
+    button {
+      margin-left: 1em;
+      padding: 0.8em 1.2em;
+      border: none;
+      border-radius: 20px;
+      background: #007bff;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div id="chat"></div>
+  <form id="form">
+    <input type="text" id="input" placeholder="Pose ta question..." required />
+    <button type="submit">Envoyer</button>
+  </form>
+
+  <script>
+    const form = document.getElementById("form");
+    const input = document.getElementById("input");
+    const chat = document.getElementById("chat");
+
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const message = input.value;
+      chat.innerHTML += `<div class="message user">${message}</div>`;
+      input.value = "";
+      const res = await fetch("/chat", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ message })
+      });
+      const data = await res.json();
+      chat.innerHTML += `<div class="message bot">${data.reply}</div>`;
+      chat.scrollTop = chat.scrollHeight;
+    };
+  </script>
+</body>
+</html>
